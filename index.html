@@ -1265,7 +1265,8 @@ function boot(){
   syncReminderToApp();syncLoggedToApp();
   setInterval(tick,30000);
   setInterval(function(){if(SY.token&&document.visibilityState==='visible'&&!SY.busy&&Date.now()-lastPull>120000){lastPull=Date.now();syncNow(false)}},30000);
-  if(location.protocol==='https:'||location.hostname==='localhost'){if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}}
+  if(IS_APP){try{if('serviceWorker' in navigator&&navigator.serviceWorker.getRegistrations)navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister()})}).catch(function(){})}catch(e){}}
+  else if(location.protocol==='https:'||location.hostname==='localhost'){if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}}
 }
 boot();
 })();

@@ -6,6 +6,7 @@ on:
     paths:
       - 'android/**'
       - '.github/workflows/android.yml'
+      - 'index.html'
   workflow_dispatch:
 
 permissions:
@@ -30,11 +31,29 @@ jobs:
         with:
           gradle-version: '8.9'
 
+      - name: Put the site inside the app
+        run: |
+          mkdir -p android/app/src/main/assets/site
+          cp index.html manifest.webmanifest icon-180.png icon-192.png icon-512.png \
+             abudana-logo.png abudana-logo-transparent.png abudana-logo-wide.png abudana-logo.svg \
+             android/app/src/main/assets/site/
+
+      - name: Make a signing key for this build
+        run: |
+          PASS="$(openssl rand -hex 16)"
+          echo "::add-mask::$PASS"
+          keytool -genkeypair -keystore "$RUNNER_TEMP/tatweer.p12" -storetype PKCS12 \
+            -alias abudana -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass "$PASS" -keypass "$PASS" \
+            -dname "CN=Abu Dana Programming, O=Abu Dana, C=SA"
+          echo "TATWEER_KS=$RUNNER_TEMP/tatweer.p12" >> "$GITHUB_ENV"
+          echo "TATWEER_KS_PASS=$PASS" >> "$GITHUB_ENV"
+
       - name: Build the APK
-        run: gradle -p android assembleDebug --no-daemon --stacktrace
+        run: gradle -p android assembleRelease --no-daemon --stacktrace
 
       - name: Name the APK
-        run: cp android/app/build/outputs/apk/debug/app-debug.apk tatweer.apk
+        run: cp android/app/build/outputs/apk/release/app-release.apk tatweer.apk
 
       - name: Publish as the latest release
         uses: softprops/action-gh-release@v2
@@ -43,6 +62,6 @@ jobs:
           name: تطوير الشخصية للأندرويد (${{ github.run_number }})
           body: |
             تطبيق «تطوير الشخصية» للأندرويد، من أبو دانة للبرمجة.
-            نزّل الملف tatweer.apk وثبّته. التطبيق يفتح الموقع نفسه، فأي تحديث للموقع يوصلك تلقائياً.
+            الموقع كامل داخل التطبيق، فيشتغل بدون إنترنت وحتى لو GitHub محجوب، ويجيب تحديثات الموقع تلقائياً متى ما وصل للإنترنت.
           files: tatweer.apk
           make_latest: 'true'
