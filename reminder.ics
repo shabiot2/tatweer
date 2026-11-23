@@ -1,0 +1,24 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Tatweer Alshakhsiya//Daily reminder//AR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:tatweer-daily-20261123@shabiot2.github.io
+DTSTAMP:20261123T080000Z
+DTSTART:20261123T183000Z
+DTEND:20261123T184000Z
+RRULE:FREQ=DAILY;COUNT=90
+SUMMARY:تطوير الشخصية: سجّل يومك
+DESCRIPTION:افتح موقع تطوير الشخصية وسجّل مقيا
+ س التأهّب وأي موقف مرّ بك اليوم.\nhttps://shabiot
+ 2.github.io/tatweer/
+URL:https://shabiot2.github.io/tatweer/
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:حان وقت تسجيل يومك
+TRIGGER:PT0S
+END:VALARM
+END:VEVENT
+END:VCALENDAR
