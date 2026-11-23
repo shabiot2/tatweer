@@ -1,0 +1,48 @@
+name: Android APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - '.github/workflows/android.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Build the APK
+        run: gradle -p android assembleDebug --no-daemon --stacktrace
+
+      - name: Name the APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk tatweer.apk
+
+      - name: Publish as the latest release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-${{ github.run_number }}
+          name: تطوير الشخصية للأندرويد (${{ github.run_number }})
+          body: |
+            تطبيق «تطوير الشخصية» للأندرويد، من أبو دانة للبرمجة.
+            نزّل الملف tatweer.apk وثبّته. التطبيق يفتح الموقع نفسه، فأي تحديث للموقع يوصلك تلقائياً.
+          files: tatweer.apk
+          make_latest: 'true'

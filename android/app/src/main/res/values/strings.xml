@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">تطوير الشخصية</string>
+    <string name="channel_name">التذكير اليومي</string>
+    <string name="channel_desc">تذكير بتسجيل يومك في تطوير الشخصية</string>
+    <string name="remind_title">تطوير الشخصية</string>
+    <string name="remind_text">حان وقت تسجيل يومك. ابدأ بمقياس التأهّب.</string>
+    <string name="no_app">لا يوجد تطبيق يفتح هذا الرابط</string>
+    <string name="offline">تعذّر الاتصال. تأكد من الإنترنت ثم اسحب للتحديث أو أعد فتح التطبيق.</string>
+</resources>

@@ -1,5 +1,5 @@
 // Keeps «تطوير الشخصية» opening without a network: the page is fetched fresh when online and served from cache when offline.
-const CACHE = 'tatweer-v1';
+const CACHE = 'tatweer-v2';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
